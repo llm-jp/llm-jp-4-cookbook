@@ -37,6 +37,7 @@ class HarmonyMessageParser:
 
     def __init__(self, tokenizer: TokenizerLike):
         vocab = tokenizer.get_vocab()
+        self._start_id = vocab["<|start|>"]
         self._begin_map = {
             vocab["<|start|>"]: "role",
             vocab["<|channel|>"]: "channel",
