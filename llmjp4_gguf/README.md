@@ -31,7 +31,7 @@ Download the `.gguf` file and pass it with `--model`.
 
 ```bash
 ./build/bin/llama-cli \
-    --model /path/to/llm-jp-4-8b-thinking-Q4_K_M.gguf
+    --model /path/to/llm-jp-4-8b-thinking-Q4_K_M.gguf \
     --jinja
 ```
 
