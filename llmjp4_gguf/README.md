@@ -4,7 +4,7 @@ This directory provides examples to run LLM-jp-4 GGUF models with [llama.cpp](ht
 
 > [!IMPORTANT]
 > LLM-jp-4 GGUF models require this fork to work around tokenizer handling issues.
-> If users use the upstream `ggml-org/llama.cpp` build as-is, chat parsing may fail for `-instruct` and `-thinking` models.
+> If users use the upstream `ggml-org/llama.cpp` build as-is, chat parsing fails for `-thinking` models.
 > We're in the process of upstreaming the necessary fixes, but in the meantime, please use the LLM-jp fork of `llama.cpp` to run LLM-jp-4 GGUF models.
 
 ## Requirements
