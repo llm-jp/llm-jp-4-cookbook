@@ -1,4 +1,4 @@
-# LLM-jp-4 examples for GGUF
+# LLM-jp-4 examples for llama.cpp
 
 This directory provides examples to run LLM-jp-4 GGUF models with [llama.cpp](https://github.com/ggml-org/llama.cpp).
 

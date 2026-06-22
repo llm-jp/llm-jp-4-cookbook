@@ -8,7 +8,7 @@ At this moment, this repository contains the following subdirectories for specif
 
 * [`llmjp4_transformers`](llmjp4_transformers) ... for Huffing Face's [Transformers](https://github.com/huggingface/transformers)
 * [`llmjp4_vllm`](llmjp4_vllm) ... for [vLLM](https://github.com/vllm-project/vllm)
-* [`llmjp4_gguf`](llmjp4_gguf) ... for [llama.cpp](https://github.com/ggml-org/llama.cpp) and GGUF models
+* [`llmjp4_llama-cpp`](llmjp4_llama-cpp) ... for [llama.cpp](https://github.com/ggml-org/llama.cpp)
 
 ## `trust_remote_code` is required
 
