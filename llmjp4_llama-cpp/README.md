@@ -1,15 +1,15 @@
 # LLM-jp-4 examples for llama.cpp
 
-This directory provides examples to run LLM-jp-4 GGUF models with [llama.cpp](https://github.com/ggml-org/llama.cpp).
+This directory provides examples to run LLM-jp-4 GGUF models with [the LLM-jp fork of llama.cpp](https://github.com/llm-jp/llama.cpp).
 
 > [!IMPORTANT]
 > LLM-jp-4 GGUF models require this fork to work around tokenizer handling issues.
 > If users use the upstream `ggml-org/llama.cpp` build as-is, chat parsing fails for `-thinking` models.
-> We're in the process of upstreaming the necessary fixes, but in the meantime, please use the LLM-jp fork of `llama.cpp` to run LLM-jp-4 GGUF models.
+> We're in the process of upstreaming the necessary fixes, but in the meantime, please use the LLM-jp fork to run LLM-jp-4 GGUF models.
 
 ## Requirements
 
-Install and build the LLM-jp fork of `llama.cpp` first:
+Build and install the LLM-jp fork of `llama.cpp`:
 
 ```bash
 git clone https://github.com/llm-jp/llama.cpp
@@ -27,7 +27,7 @@ cmake --build build --config Release -j
 
 ## Chat with `llama-cli`
 
-Download the `.gguf` file and pass it with `--model`.
+`llama-cli` provides a command-line interface to chat with LLM-jp-4 GGUF models.
 
 ```bash
 ./build/bin/llama-cli \
@@ -37,7 +37,7 @@ Download the `.gguf` file and pass it with `--model`.
 
 ## OpenAI-compatible local server
 
-`llama-server` provides an OpenAI-compatible HTTP API.
+`llama-server` launches an OpenAI-compatible server.
 
 ```bash
 ./build/bin/llama-server \
@@ -47,8 +47,7 @@ Download the `.gguf` file and pass it with `--model`.
     --port 8080
 ```
 
-After starting the server, send chat completion requests to
-`http://127.0.0.1:8080/v1/chat/completions`.
+After starting the server, send chat completion requests to `http://127.0.0.1:8080/v1/chat/completions`.
 
 ```bash
 curl http://127.0.0.1:8080/v1/chat/completions \
@@ -64,5 +63,5 @@ curl http://127.0.0.1:8080/v1/chat/completions \
 
 ## Notes
 
-* Use the LLM-jp fork of `llama.cpp`. The upstream `ggml-org/llama.cpp` build fails chat parsing because of tokenizer handling differences.
+* Use the LLM-jp fork of `llama.cpp`. The upstream `ggml-org/llama.cpp` build fails chat parsing because of tokenizer handling issues.
 * Keep `--jinja` enabled when using the chat template embedded in the GGUF file.
