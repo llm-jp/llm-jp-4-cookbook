@@ -1,4 +1,4 @@
-# This file contains code to use LLM-jp-4 models with Hugging Face Transformers library.
+# This file contains code to use LLM-jp-4.1 models with Hugging Face Transformers library.
 
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -6,12 +6,12 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 def main():
     tokenizer = AutoTokenizer.from_pretrained(
-        "llm-jp/llm-jp-4-8b-thinking",
+        "llm-jp/llm-jp-4.1-8b-thinking",
         # trust_remote_code is required to load custom tokenizer and reasoning parser.
         trust_remote_code=True,
     )
     model = AutoModelForCausalLM.from_pretrained(
-        "llm-jp/llm-jp-4-8b-thinking",
+        "llm-jp/llm-jp-4.1-8b-thinking",
         dtype=torch.bfloat16,
         device_map="auto",
         trust_remote_code=True,
