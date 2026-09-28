@@ -49,17 +49,9 @@ upgrading vLLM. Do not assume the two environments are interchangeable.
 For an intentional dependency change, update the affected manifest and regenerate
 its lockfile with `uv lock` in that directory. Keep unrelated lockfiles unchanged.
 
-The vLLM project pins `0.28.1rc1.dev286+g798b557e0` from the official wheel index
-for commit `798b557e061b5b7554e2a26ef92f1ec88e9518e9`. This build includes
-[module-name plugin loading](https://github.com/vllm-project/vllm/pull/45241).
-The package source is explicit and applies only to vLLM. When replacing this pin,
-verify plugin loading in the candidate build; version ordering alone does not
-establish that the change is included.
-
-`llm-jp-vllm` is pinned to Git commit
-`daede3e4e196916e8dea9b20d871ba9d4f2d752b`, which fixes imports for the newer
-vLLM protocol layout. PyPI 0.1.0 lacks this fix. Keep both source pins and the
-lockfile consistent, and check compatibility before moving to published releases.
+The vLLM project requires vLLM 0.30.0 or later and `llm-jp-vllm` 0.1.1 or later
+from PyPI. Keep the minimum versions and lockfile consistent, and check parser
+compatibility when upgrading either package.
 
 ## Implementation guidance
 

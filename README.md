@@ -57,10 +57,9 @@ settings, not command-line options.
 ### vLLM: Python inference
 
 The vLLM environment includes [llm-jp-vllm](https://github.com/llm-jp/llm-jp-vllm)
-for Harmony and reasoning parsing. It pins an official vLLM nightly build with
-module-name plugin support and a compatible `llm-jp-vllm` Git revision. Git is
-required for installation; see the [vLLM setup guide](llmjp4_vllm/README.md)
-for the versions and package sources.
+for Harmony and reasoning parsing. It requires vLLM 0.30.0 or later and
+`llm-jp-vllm` 0.1.1 or later; see the [vLLM setup guide](llmjp4_vllm/README.md)
+for setup details.
 
 From the repository root:
 

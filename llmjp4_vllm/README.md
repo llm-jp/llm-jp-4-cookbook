@@ -12,20 +12,6 @@ cd llmjp4_vllm
 uv sync --locked
 ```
 
-This installs `llm-jp-vllm` and the vLLM build recorded in `uv.lock`. The project
-pins `vllm==0.28.1rc1.dev286+g798b557e0` from the official wheel index for commit
-`798b557e061b5b7554e2a26ef92f1ec88e9518e9`, which includes
-[module-name parser plugin support](https://github.com/vllm-project/vllm/pull/45241).
-The inspected vLLM 0.29.0 release does not include that change. The custom index
-in `pyproject.toml` is used only for vLLM. The pinned wheels target Linux x86_64
-and aarch64.
-
-`llm-jp-vllm` is installed from commit
-`daede3e4e196916e8dea9b20d871ba9d4f2d752b` on GitHub, which
-[updates the protocol imports for this vLLM API](https://github.com/llm-jp/llm-jp-vllm/commit/daede3e4e196916e8dea9b20d871ba9d4f2d752b).
-PyPI version 0.1.0 does not contain that fix. Install Git as well as `uv` to
-resolve this source dependency. Other dependencies come from PyPI.
-
 Use a supported GPU and driver with enough memory for the selected model.
 Model weights are downloaded on first use unless already cached. The examples
 enable `trust_remote_code` to load the model's custom tokenizer.

@@ -5,19 +5,6 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "llm-jp-vllm",
-    "torch>=2.10.0",
-    "transformers>=4.57.6",
-    "vllm==0.28.1rc1.dev286+g798b557e0",
+    "llm-jp-vllm>=0.1.1",
+    "vllm>=0.30.0",
 ]
-
-# Pin the upstream build that adds module-name parser plugin loading (#45241).
-[tool.uv.sources]
-# PyPI 0.1.0 predates the protocol import fix needed by this vLLM build.
-llm-jp-vllm = { git = "https://github.com/llm-jp/llm-jp-vllm", rev = "daede3e4e196916e8dea9b20d871ba9d4f2d752b" }
-vllm = { index = "vllm-module-plugins" }
-
-[[tool.uv.index]]
-name = "vllm-module-plugins"
-url = "https://wheels.vllm.ai/798b557e061b5b7554e2a26ef92f1ec88e9518e9"
-explicit = true
