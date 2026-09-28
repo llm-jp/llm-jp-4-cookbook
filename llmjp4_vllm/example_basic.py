@@ -2,14 +2,14 @@
 
 from vllm import LLM, SamplingParams
 
-from llmjp4_harmony import HarmonyMessageParser
+from llm_jp_vllm.llmjp4.harmony import HarmonyMessageParser
 
 
 def main():
     llm = LLM(
-        model="llm-jp/llm-jp-4-8b-thinking",
+        model="llm-jp/llm-jp-4.1-8b-thinking",
         dtype="bfloat16",
-        # trust_remote_code is required to load custom tokenizer and reasoning parser.
+        # trust_remote_code is required to load the model's custom tokenizer.
         trust_remote_code=True,
     )
     tokenizer = llm.get_tokenizer()
@@ -48,29 +48,30 @@ def main():
     print(decoded_output)
 
     parser = HarmonyMessageParser(tokenizer)
+    # Generation continues after this assistant prefix in the input prompt.
+    response_prefill = tokenizer.encode("<|start|>assistant", add_special_tokens=False)
     print("\n--- Parsed Harmony Messages ---")
-    for i, message in enumerate(parser.iter_messages(output.token_ids), start=1):
+    for i, message in enumerate(
+        parser.iter_messages(response_prefill + list(output.token_ids)), start=1
+    ):
         print(f"Message {i}:")
 
         # The end type can be "END", "CALL", or "INCOMPLETE".
         print("  End Type:", message.end)
+        print("  Message Start Position:", message.start_position)
 
         if message.role:
-            print("  Role Tokens:", message.role.token_ids)
-            print("  Role Text:", repr(tokenizer.decode(message.role.token_ids)))
-            print("  Role Start Position:", message.role.start)
+            print("  Role Tokens:", message.role)
+            print("  Role Text:", repr(tokenizer.decode(message.role)))
         if message.channel:
-            print("  Channel Tokens:", message.channel.token_ids)
-            print("  Channel Text:", repr(tokenizer.decode(message.channel.token_ids)))
-            print("  Channel Start Position:", message.channel.start)
+            print("  Channel Tokens:", message.channel)
+            print("  Channel Text:", repr(tokenizer.decode(message.channel)))
         if message.constrain:
-            print("  Constrain Tokens:", message.constrain.token_ids)
-            print("  Constrain Text:", repr(tokenizer.decode(message.constrain.token_ids)))
-            print("  Constrain Start Position:", message.constrain.start)
+            print("  Constrain Tokens:", message.constrain)
+            print("  Constrain Text:", repr(tokenizer.decode(message.constrain)))
         if message.content:
-            print("  Content Tokens:", message.content.token_ids)
-            print("  Content Text:", repr(tokenizer.decode(message.content.token_ids)))
-            print("  Content Start Position:", message.content.start)
+            print("  Content Tokens:", message.content)
+            print("  Content Text:", repr(tokenizer.decode(message.content)))
 
 
 if __name__ == "__main__":

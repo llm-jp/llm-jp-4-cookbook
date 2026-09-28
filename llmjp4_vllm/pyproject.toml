@@ -5,7 +5,6 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "torch>=2.10.0",
-    "transformers>=4.57.6",
-    "vllm>=0.18.0",
+    "llm-jp-vllm>=0.1.1",
+    "vllm>=0.30.0",
 ]
