@@ -13,7 +13,7 @@
 curl http://localhost:8000/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "llm-jp/llm-jp-4-8b-thinking",
+    "model": "llm-jp/llm-jp-4.1-8b-thinking",
     "messages": [{"role": "user", "content": "二次方程式の解の公式を導出して下さい。"}],
     "stream": true
   }'
