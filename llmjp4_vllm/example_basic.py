@@ -7,7 +7,7 @@ from llm_jp_vllm.llmjp4.harmony import HarmonyMessageParser
 
 def main():
     llm = LLM(
-        model="llm-jp/llm-jp-4-8b-thinking",
+        model="llm-jp/llm-jp-4.1-8b-thinking",
         dtype="bfloat16",
         # trust_remote_code is required to load the model's custom tokenizer.
         trust_remote_code=True,

@@ -52,10 +52,13 @@ in that reconstructed sequence. Output is decoded with the model tokenizer.
 From this directory:
 
 ```bash
-uv run --locked vllm serve llm-jp/llm-jp-4-8b-thinking \
+uv run --locked vllm serve llm-jp/llm-jp-4.1-8b-thinking \
     --trust-remote-code \
     --reasoning-parser llmjp4 \
     --reasoning-parser-plugin llm_jp_vllm.llmjp4 \
+    --enable-auto-tool-choice \
+    --tool-call-parser llmjp4 \
+    --tool-parser-plugin llm_jp_vllm.llmjp4 \
     --host 127.0.0.1 \
     --port 8000
 ```
@@ -75,6 +78,12 @@ The client requires `curl` and sends a streaming request to
 reasoning extraction are implemented by `llm-jp-vllm`. Set `"stream": false` in
 the request for a single response. Keep the model and endpoint in the client
 consistent with the server command.
+
+To test function calling, run the following command:
+
+```bash
+bash fc_test.sh
+```
 
 ## Validation environment
 
