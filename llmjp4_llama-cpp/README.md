@@ -1,6 +1,6 @@
 # LLM-jp-4.1 examples for llama.cpp
 
-This directory provides examples to run LLM-jp-4.1 GGUF models with [a fork of llama.cpp](https://github.com/e-mon/llama.cpp/tree/llmjp-harmony-handler).
+This directory provides examples to run LLM-jp-4.1 GGUF models with [our fork of llama.cpp](https://github.com/llm-jp/llama.cpp).
 
 > [!IMPORTANT]
 > LLM-jp-4.1 GGUF models require this fork to work around tokenizer handling issues.
@@ -12,7 +12,7 @@ This directory provides examples to run LLM-jp-4.1 GGUF models with [a fork of l
 Build and install the LLM-jp fork of `llama.cpp`:
 
 ```bash
-git clone https://github.com/e-mon/llama.cpp -b llmjp-harmony-handler
+git clone https://github.com/llm-jp/llama.cpp -b llmjp-harmony-handler --single-branch # for LLM-jp-4 series, specify `llm-jp-4` instead
 cd llama.cpp
 cmake -B build
 cmake --build build --config Release -j
