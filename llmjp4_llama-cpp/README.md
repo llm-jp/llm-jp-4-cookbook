@@ -12,7 +12,7 @@ This directory provides examples to run LLM-jp-4.1 GGUF models with [our fork of
 Build and install the LLM-jp fork of `llama.cpp`:
 
 ```bash
-git clone https://github.com/llm-jp/llama.cpp -b llmjp-harmony-handler --single-branch # for LLM-jp-4 series, specify `llm-jp-4` instead
+git clone https://github.com/llm-jp/llama.cpp -b llmjp-harmony-handler --single-branch # for LLM-jp-4 series, specify `-b llm-jp-4` instead
 cd llama.cpp
 cmake -B build
 cmake --build build --config Release -j
