@@ -1,7 +1,72 @@
-# This file contains code to use LLM-jp-4.1 models with Hugging Face Transformers library.
+# This file contains code to use LLM-jp-4 models with Hugging Face Transformers library.
 
 import torch
+
 from transformers import AutoModelForCausalLM, AutoTokenizer
+
+
+# NOTE (kiyomaru): This change should be upstreamed to llm-jp-tokenizer.
+# The model's bundled schema does not recognize Harmony tool calls whose
+# recipient appears in the role section, so provide a compatible schema.
+RESPONSE_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "role": {"const": "assistant"},
+        "content": {
+            "type": "string",
+            "x-regex": (
+                r"<\|channel\|>final<\|message\|>(.*?)"
+                r"(?:<\|end\|>|<\|return\|>|$)"
+            ),
+        },
+        "thinking": {
+            "type": "string",
+            "x-regex": (
+                r"<\|channel\|>analysis<\|message\|>(.*?)<\|end\|>"
+            ),
+        },
+        "tool_calls": {
+            "x-regex-iterator": (
+                r"((?:to=functions\..*?<\|channel\|>commentary|"
+                r"<\|channel\|>commentary.*?to=functions\.[^\s<]+)"
+                r".*?<\|message\|>.*?)(?:<\|end\|>|<\|call\|>|$)"
+            ),
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "type": {"const": "function"},
+                    "function": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "x-regex": r"to=functions\.([^\s<]+)",
+                            },
+                            "arguments": {
+                                "type": "object",
+                                "x-regex": r"<\|message\|>(.*)",
+                                "x-parser": "json",
+                                "additionalProperties": {},
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    },
+}
+
+
+def get_weather(city: str) -> str:
+    """
+    Get the current weather for a city.
+
+    Args:
+        city: The city to get the weather for.
+    """
+    # Dummy implementation for demonstration.
+    return f"The weather in {city} is sunny, with a temperature of 25°C."
 
 
 def main():
@@ -19,11 +84,14 @@ def main():
     model.eval()
 
     messages = [
-        {"role": "user", "content": "日本語で自己紹介してください。"},
+        {"role": "user", "content": "東京と大阪の天気を教えてください。"},
     ]
+
+    tools = [get_weather]
 
     prompt: str = tokenizer.apply_chat_template(
         messages,
+        tools=tools,
         tokenize=False,
         add_generation_prompt=True,
         reasoning_effort="medium",
@@ -46,7 +114,9 @@ def main():
             top_p=0.9,
         )
 
-    generated_ids: list[int] = output_tensor[0][inputs["input_ids"].shape[1]:].tolist()
+    generated_ids: list[int] = output_tensor[
+        0, inputs["input_ids"].shape[1]:
+    ].tolist()
 
     print("--- Generated IDs ---")
     print(generated_ids)
@@ -56,12 +126,13 @@ def main():
     print("\n--- Response ---")
     print(response)
 
-    parsed = tokenizer.parse_response(response)
+    parsed = tokenizer.parse_response(response, schema=RESPONSE_SCHEMA)
 
     print("\n--- Parsed Response ---")
     print("Role:", parsed.get("role"))
     print("Thinking:", parsed.get("thinking"))
     print("Content:", parsed.get("content"))
+    print("Tool Calls:", parsed.get("tool_calls"))
 
     # Harmony parser is bundled as the parse_harmony_message method of the tokenizer.
     # This function accepts a list of token IDs (not strings)
@@ -70,13 +141,13 @@ def main():
     # To correctly parse the response,
     # we need to include the prefill tokens for the assistant's response.
     response_prefill = tokenizer.encode("<|start|>assistant")
-    parsed_harmony = tokenizer.parse_harmony_message(response_prefill + generated_ids)
+    parsed_harmony = tokenizer.parse_harmony_message(
+        response_prefill + generated_ids
+    )
 
     print("\n--- Parsed Harmony Messages ---")
     for i, message in enumerate(parsed_harmony, start=1):
         print(f"Message {i}:")
-
-        # The end type can be "END", "CALL", or "INCOMPLETE".
         print("  End Type:", message.end)
 
         if message.role:
