@@ -114,8 +114,8 @@ to `false` to receive a single response.
 Follow the [llama.cpp guide](llmjp4_llama-cpp/README.md) for build commands,
 optional CUDA support, `llama-cli`, and `llama-server` examples.
 
-That guide uses the LLM-jp fork of llama.cpp to address tokenizer and chat-parsing
-issues with LLM-jp-4 GGUF models. Use the documented fork and keep `--jinja`
+That guide includes a stock upstream `llama-server` setup for LLM-jp-4.1 GGUF
+models and the fork-based `llama-cli` recipe. Keep `--jinja`
 enabled for the model's embedded chat template. Supply your own GGUF model path;
 model files are not included in this repository.
 
