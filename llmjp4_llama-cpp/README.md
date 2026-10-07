@@ -1,50 +1,28 @@
 # LLM-jp-4.1 examples for llama.cpp
 
-This directory provides examples to run LLM-jp-4.1 GGUF models with [our fork of llama.cpp](https://github.com/llm-jp/llama.cpp).
-
-> [!IMPORTANT]
-> LLM-jp-4.1 GGUF models require this fork to work around tokenizer handling issues.
-> If users use the upstream `ggml-org/llama.cpp` build as-is, chat parsing fails for `-thinking` models.
-> We're in the process of upstreaming the necessary fixes, but in the meantime, please use the LLM-jp fork to run LLM-jp-4.1 GGUF models.
+This directory provides examples to run LLM-jp-4.1 GGUF models with [llama.cpp](https://github.com/ggml-org/llama.cpp).
 
 ## Requirements
 
-Build and install the LLM-jp fork of `llama.cpp`:
+Install [llama.cpp](https://github.com/ggml-org/llama.cpp) by following the official installation instructions.
+
+> [!IMPORTANT]
+> LLM-jp-4.1 is supported in llama.cpp v0.6.0 or later.
+
+## Chat from the command line
+
+Use `llama cli` to chat with an LLM-jp-4.1 GGUF model from the command line.
 
 ```bash
-git clone https://github.com/llm-jp/llama.cpp -b llm-jp-4.1 --single-branch # for LLM-jp-4 series, specify `-b llm-jp-4` instead
-cd llama.cpp
-cmake -B build
-cmake --build build --config Release -j
-```
-
-When using NVIDIA GPUs, build `llama.cpp` with CUDA support:
-
-```bash
-cmake -B build -DGGML_CUDA=ON
-cmake --build build --config Release -j
-```
-
-## Chat with `llama-cli`
-
-`llama-cli` provides a command-line interface to chat with LLM-jp-4.1 GGUF models.
-
-```bash
-./build/bin/llama-cli \
-    --model /path/to/llm-jp-4.1-8b-thinking-Q4_K_M.gguf \
-    --jinja
+llama cli -hf llm-jp/llm-jp-4.1-8b-thinking-gguf:Q4_K_M
 ```
 
 ## OpenAI-compatible local server
 
-`llama-server` launches an OpenAI-compatible server.
+Use llama server to launch a local server with an OpenAI-compatible API.
 
 ```bash
-./build/bin/llama-server \
-    --model /path/to/llm-jp-4.1-8b-thinking-Q4_K_M.gguf \
-    --jinja \
-    --host 127.0.0.1 \
-    --port 8080
+llama server -hf llm-jp/llm-jp-4.1-8b-thinking-gguf:Q4_K_M --host 127.0.0.1 --port 8080
 ```
 
 After starting the server, send chat completion requests to `http://127.0.0.1:8080/v1/chat/completions`.
@@ -55,7 +33,7 @@ curl http://127.0.0.1:8080/v1/chat/completions \
     -d '{
         "model": "llm-jp-4.1-8b-thinking-Q4_K_M",
         "messages": [
-            {"role": "user", "content": "Transformer 言語モデルについて教えてください。"}
+            {"role": "user", "content": "Tell me about Transformer-based language models"}
         ],
         "max_tokens": 512
     }'
