@@ -1,4 +1,4 @@
-# This file contains code to use LLM-jp-4 models with Hugging Face Transformers library.
+# This file contains code to use LLM-jp-4.1 models with Hugging Face Transformers library.
 
 import torch
 
@@ -140,7 +140,7 @@ def main():
 
     # To correctly parse the response,
     # we need to include the prefill tokens for the assistant's response.
-    response_prefill = tokenizer.encode("<|start|>assistant")
+    response_prefill = tokenizer.encode("<|start|>assistant", add_special_tokens=False)
     parsed_harmony = tokenizer.parse_harmony_message(
         response_prefill + generated_ids
     )

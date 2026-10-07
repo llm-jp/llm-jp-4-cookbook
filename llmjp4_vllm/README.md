@@ -1,9 +1,14 @@
-# LLM-jp-4 examples for vLLM
+# LLM-jp-4.1 examples for vLLM
 
-Run LLM-jp-4 models with vLLM and the
+Run LLM-jp-4.1 models with vLLM and the
 [llm-jp-vllm](https://github.com/llm-jp/llm-jp-vllm) parser library.
 
 ## Setup
+
+Use **vLLM 0.30.0 or later** and **llm-jp-vllm 0.1.1 or later**. These are the
+oldest official versioned releases that support this cookbook's parser setup.
+See the [plugin compatibility requirements](https://github.com/llm-jp/llm-jp-vllm/pull/8).
+Both minimum versions are recorded in `pyproject.toml` and pinned in `uv.lock`.
 
 Use Python 3.13 and `uv`. From the repository root:
 
@@ -24,7 +29,7 @@ From this directory:
 uv run --locked example_basic.py
 ```
 
-The example loads `llm-jp/llm-jp-4-8b-thinking` in `bfloat16`, generates a response
+The example loads `llm-jp/llm-jp-4.1-8b-thinking` in `bfloat16`, generates a response
 to a Japanese prompt, and prints decoded output and Harmony messages. Edit the
 model, messages, reasoning effort, or sampling settings in the script to adapt it.
 
@@ -49,14 +54,14 @@ uv run --locked vllm serve llm-jp/llm-jp-4.1-8b-thinking \
     --port 8000
 ```
 
-The module-name plugin option loads the installed library and registers the
-`llmjp4` reasoning parser. The standard vLLM CLI replaces the former
-`example_cli.py` wrapper; no parser source files need to be copied locally.
+The module-name plugin options load the installed library and register the
+`llmjp4` reasoning and tool parsers. `--enable-auto-tool-choice` allows the model
+to request tools supplied by the client.
 
 After the server is ready, run the client in another terminal from this directory:
 
 ```bash
-bash chat_test.sh
+bash curl_chat_test.sh
 ```
 
 The client requires `curl` and sends a streaming request to
@@ -68,15 +73,20 @@ consistent with the server command.
 To test function calling, run the following command:
 
 ```bash
-bash fc_test.sh
+bash curl_function_calling_test.sh
 ```
+
+This sends a non-streaming request with `tool_choice: "auto"` and prints the
+proposed function name and arguments. It does not execute the function. Add
+`"stream": true` to the JSON request to inspect tool-call deltas.
 
 ## Validation environment
 
-The pinned dependency set was checked with `llm-jp/llm-jp-4-8b-thinking` on an
-NVIDIA RTX 6000 Ada Generation (48 GiB), driver 580.119.02, Python 3.13.5,
-PyTorch 2.13.0, and its CUDA 13.0 runtime. The Python example and the standard
-CLI server both ran on the GPU; streaming and non-streaming chat requests
-returned separate reasoning and final-answer content.
+Validated `llm-jp/llm-jp-4.1-8b-thinking` with vLLM 0.30.0, llm-jp-vllm 0.1.1,
+Python 3.13.5, and PyTorch 2.13.0 (CUDA 13.0). The Python example and
+streaming/non-streaming API chat and tool calls passed, including reasoning
+separation. Parallel tool-call parsing was also checked with the model tokenizer.
+See the
+[test hardware](../README.md#recorded-test-environment).
 
 For model variants and tokenizer guidance, see the [root README](../README.md).

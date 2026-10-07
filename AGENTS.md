@@ -2,7 +2,7 @@
 
 ## Purpose and scope
 
-This repository is a cookbook for running LLM-jp-4 models with Transformers,
+This repository is a cookbook for running LLM-jp-4.1 models with Transformers,
 vLLM, and llama.cpp. Keep examples small, readable, and runnable on their own.
 The root [README.md](README.md) is the user-facing entry point; this file covers
 maintenance and agent workflows.
@@ -15,12 +15,14 @@ Japanese prompts in examples are intentional and do not need translation.
 | Path | Responsibility |
 | --- | --- |
 | `llmjp4_transformers/example_basic.py` | Model loading, chat templating, generation, and parsing with the model's bundled tokenizer helpers. |
+| `llmjp4_transformers/example_function_calling.py` | Tool-call generation and parsing with the model's bundled tokenizer. |
 | `llmjp4_transformers/{pyproject.toml,uv.lock,.python-version}` | Independent Transformers environment. |
 | `llmjp4_vllm/example_basic.py` | Offline generation, explicit token decoding, and Harmony parsing through llm-jp-vllm. |
 | `llmjp4_vllm/README.md` | Dependency setup and standard vLLM CLI commands with module-name plugin loading. |
-| `llmjp4_vllm/chat_test.sh` | Manual streaming chat request to a running server. |
+| `llmjp4_vllm/curl_chat_test.sh` | Manual streaming chat request to a running server. |
+| `llmjp4_vllm/curl_function_calling_test.sh` | Manual tool-call request to a running server. |
 | `llmjp4_vllm/{pyproject.toml,uv.lock,.python-version}` | Independent vLLM environment. |
-| `llmjp4_llama-cpp/README.md` | Instructions for building and using the external LLM-jp llama.cpp fork. |
+| `llmjp4_llama-cpp/README.md` | Instructions for installing and using upstream llama.cpp v0.6.0 or later. |
 
 There is no root Python package, shared uv workspace, automated test suite, or CI
 configuration in the tracked repository. The llama.cpp directory contains
@@ -49,9 +51,14 @@ upgrading vLLM. Do not assume the two environments are interchangeable.
 For an intentional dependency change, update the affected manifest and regenerate
 its lockfile with `uv lock` in that directory. Keep unrelated lockfiles unchanged.
 
+The Transformers examples require Transformers 5.0.0 or later for `parse_response`.
+
 The vLLM project requires vLLM 0.30.0 or later and `llm-jp-vllm` 0.1.1 or later
 from PyPI. Keep the minimum versions and lockfile consistent, and check parser
 compatibility when upgrading either package.
+
+LLM-jp-4.1 GGUF models require upstream llama.cpp v0.6.0 or later for the
+Harmony chat parser. Document minimum stable releases, excluding pre-releases.
 
 ## Implementation guidance
 
@@ -72,8 +79,8 @@ compatibility when upgrading either package.
   `--reasoning-parser llmjp4 --reasoning-parser-plugin llm_jp_vllm.llmjp4`.
   No local CLI wrapper or parser-registration module is needed.
 - Keep model names and endpoints consistent across server commands and
-  `chat_test.sh` when changing defaults. Update user documentation when commands
-  or observable behavior change.
+  both `curl_*.sh` clients when changing defaults. Update user documentation when
+  commands or observable behavior change.
 - Keep changes focused on the requested feature or fix. Avoid speculative
   abstractions, unrelated refactors, and unnecessary dependencies.
 
@@ -88,7 +95,8 @@ repository root with Python 3.13 or later available as `python3`:
 
 ```bash
 python3 -m py_compile llmjp4_transformers/*.py llmjp4_vllm/*.py
-bash -n llmjp4_vllm/chat_test.sh
+bash -n llmjp4_vllm/curl_chat_test.sh
+bash -n llmjp4_vllm/curl_function_calling_test.sh
 git diff --check
 ```
 
@@ -98,14 +106,15 @@ relevant environment and hardware are available:
 - Run the affected `example_basic.py` using that runtime's environment. Inspect
   generated tokens, decoded text, and parsed messages.
 - For vLLM dependency or serving changes, start `vllm serve` with the documented
-  plugin options and run `bash chat_test.sh` from another terminal. Inspect both
-  reasoning and final-answer deltas, and also check a non-streaming request.
+  plugin options and run both `curl_*.sh` clients from another terminal. Inspect
+  reasoning, final-answer, and tool-call deltas, and check non-streaming requests.
   The shell script is a manual request, not an automated assertion suite.
 - For changes to the Harmony example, check the external parser's message API
   and assistant-prefill handling. Parser implementation fixes belong in
   [llm-jp-vllm](https://github.com/llm-jp/llm-jp-vllm).
 - For llama.cpp documentation changes, check consistency with the documented
-  fork and distinguish commands inspected from commands actually executed.
+  upstream release and distinguish commands inspected from commands actually
+  executed.
 
 Report the checks performed and any validation that could not be run. Do not
 claim inference passed based only on syntax checks or the recorded test environment.

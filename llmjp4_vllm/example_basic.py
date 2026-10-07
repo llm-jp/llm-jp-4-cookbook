@@ -1,4 +1,4 @@
-# Example script to use LLM-jp-4 models with vLLM.
+# Example script to use LLM-jp-4.1 models with vLLM.
 
 from vllm import LLM, SamplingParams
 
