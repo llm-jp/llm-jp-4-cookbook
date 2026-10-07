@@ -155,7 +155,7 @@ Model files are not included in this repository.
 
 ## Model variants and message handling
 
-The [LLM-jp-4.1 release](https://llm-jp.nii.ac.jp/blog/llm-jp-4-1/) provides
+The [LLM-jp-4.1 release](https://huggingface.co/collections/llm-jp/llm-jp-41-models) provides
 `8b-thinking`, `32b-a3b-thinking` (MoE), and `33b-thinking` models, with GGUF
 variants. The examples default to `8b-thinking` and support reasoning effort
 `low`, `medium`, or `high`. Base models from the 4.0 series require adaptation
