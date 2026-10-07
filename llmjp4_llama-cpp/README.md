@@ -11,49 +11,25 @@ For original 4.0 GGUF files, see the
 
 ## Requirements
 
-Install CMake and a C++ compiler, then build the minimum supported stable
-release (or choose a newer stable release tag):
+Install llama.cpp by following the
+[official installation instructions](https://github.com/ggml-org/llama.cpp#quick-start).
+
+## Chat from the command line
+
+Use `llama cli` to chat with an LLM-jp-4.1 GGUF model from the command line.
+The `-hf` option downloads the selected GGUF model from Hugging Face and caches it.
 
 ```bash
-git clone https://github.com/ggml-org/llama.cpp --branch v0.6.0 --depth 1
-cd llama.cpp
-cmake -B build
-cmake --build build --config Release -j --target llama-cli llama-server
-```
-
-When using NVIDIA GPUs, install the CUDA toolkit and build with CUDA support.
-Run these commands from the cloned `llama.cpp` directory:
-
-```bash
-cmake -B build -DGGML_CUDA=ON
-cmake --build build --config Release -j --target llama-cli llama-server
-```
-
-Download a GGUF file from the
-[official 8B GGUF repository](https://huggingface.co/llm-jp/llm-jp-4.1-8b-thinking-gguf/tree/main),
-such as `llm-jp-4.1-8b-thinking-Q4_K_M.gguf`, and replace the paths below.
-Run the following commands from the cloned `llama.cpp` directory. Keep `--jinja`
-enabled to use the embedded chat template.
-
-## Chat with `llama-cli`
-
-`llama-cli` provides a command-line interface to chat with LLM-jp-4.1 GGUF models.
-
-```bash
-./build/bin/llama-cli \
-    --model /path/to/llm-jp-4.1-8b-thinking-Q4_K_M.gguf \
-    --jinja
+llama cli -hf llm-jp/llm-jp-4.1-8b-thinking-gguf:Q4_K_M
 ```
 
 ## OpenAI-compatible local server
 
-`llama-server` launches an OpenAI-compatible server.
+Use `llama serve` to launch a local server with an OpenAI-compatible API.
 
 ```bash
-./build/bin/llama-server \
-    --model /path/to/llm-jp-4.1-8b-thinking-Q4_K_M.gguf \
+llama serve -hf llm-jp/llm-jp-4.1-8b-thinking-gguf:Q4_K_M \
     --alias llm-jp-4.1-8b-thinking \
-    --jinja \
     --host 127.0.0.1 \
     --port 8080
 ```
@@ -66,7 +42,7 @@ curl http://127.0.0.1:8080/v1/chat/completions \
     -d '{
         "model": "llm-jp-4.1-8b-thinking",
         "messages": [
-            {"role": "user", "content": "Transformer 言語モデルについて教えてください。"}
+            {"role": "user", "content": "Tell me about Transformer-based language models"}
         ],
         "max_tokens": 512
     }'
@@ -78,7 +54,7 @@ and `tool_choice` fields for function calling.
 
 ## Validation
 
-Validated v0.6.0 with GCC 12.2.0 and CUDA 12.8 using
+Validated a source build of v0.6.0 with GCC 12.2.0 and CUDA 12.8 using
 `llm-jp-4.1-33b-thinking-Q4_K_M.gguf`. The upstream `test-chat` suite, CLI chat,
 and streaming/non-streaming API chat and tool calls passed. The server used a
 4096-token context and one slot. The 8B GGUF example was not tested.

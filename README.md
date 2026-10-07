@@ -11,7 +11,7 @@ Author: Yusuke Oda (@odashi)
 | --- | --- | --- |
 | Transformers | Run inference in Python and inspect generated tokens and parsed messages. | [Basic example](llmjp4_transformers/example_basic.py) |
 | vLLM | Run inference in Python or serve a chat API with llm-jp-vllm. | [Basic example](llmjp4_vllm/example_basic.py), [setup and server guide](llmjp4_vllm/README.md) |
-| llama.cpp | Run GGUF models with a command-line chat client or local server. | [Build and usage guide](llmjp4_llama-cpp/README.md) |
+| llama.cpp | Run GGUF models with a command-line chat client or local server. | [Installation and usage guide](llmjp4_llama-cpp/README.md) |
 
 The Python examples use `llm-jp/llm-jp-4.1-8b-thinking` by default. Each Python
 runtime has its own dependency manifest and lockfile; there is no root Python
@@ -146,12 +146,12 @@ the function.
 
 ## Run GGUF models with llama.cpp
 
-Follow the [llama.cpp guide](llmjp4_llama-cpp/README.md) for build commands,
-optional CUDA support, `llama-cli`, and `llama-server` examples.
+Follow the [llama.cpp guide](llmjp4_llama-cpp/README.md) for installation
+instructions and `llama cli` / `llama serve` examples.
 
-Use upstream `ggml-org/llama.cpp` **v0.6.0 or later** and keep `--jinja` enabled
-for the model's embedded chat template.
-Supply your own GGUF model path; model files are not included in this repository.
+Use upstream `ggml-org/llama.cpp` **v0.6.0 or later**. The `-hf` option in the
+examples downloads the selected GGUF model from Hugging Face and caches it.
+Model files are not included in this repository.
 
 ## Model variants and message handling
 

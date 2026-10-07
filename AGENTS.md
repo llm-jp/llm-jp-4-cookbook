@@ -22,7 +22,7 @@ Japanese prompts in examples are intentional and do not need translation.
 | `llmjp4_vllm/curl_chat_test.sh` | Manual streaming chat request to a running server. |
 | `llmjp4_vllm/curl_function_calling_test.sh` | Manual tool-call request to a running server. |
 | `llmjp4_vllm/{pyproject.toml,uv.lock,.python-version}` | Independent vLLM environment. |
-| `llmjp4_llama-cpp/README.md` | Instructions for building and using upstream llama.cpp v0.6.0 or later. |
+| `llmjp4_llama-cpp/README.md` | Instructions for installing and using upstream llama.cpp v0.6.0 or later. |
 
 There is no root Python package, shared uv workspace, automated test suite, or CI
 configuration in the tracked repository. The llama.cpp directory contains
