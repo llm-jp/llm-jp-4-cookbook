@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Example script to communicate with the vLLM server using curl.
-# Before running this script, make sure to start the vLLM server with LLM-jp-4 models loaded.
+# Before running this script, make sure to start the vLLM server with LLM-jp-4.1 models loaded.
 # See README.md for the vllm serve command with the llm-jp-vllm plugin.
 
 # "stream": true requests streaming mode, which periodically returns partial responses.
