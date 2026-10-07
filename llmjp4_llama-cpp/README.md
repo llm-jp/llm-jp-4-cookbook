@@ -1,6 +1,6 @@
 # LLM-jp-4.1 examples for llama.cpp
 
-Run LLM-jp-4.1 GGUF models with upstream
+Run LLM-jp-4.1 GGUF models with
 [ggml-org/llama.cpp](https://github.com/ggml-org/llama.cpp).
 
 Use **v0.6.0 or later**. [v0.6.0](https://github.com/ggml-org/llama.cpp/releases/tag/v0.6.0)
