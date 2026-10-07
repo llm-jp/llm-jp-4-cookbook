@@ -17,18 +17,15 @@ release (or choose a newer stable release tag):
 ```bash
 git clone https://github.com/ggml-org/llama.cpp --branch v0.6.0 --depth 1
 cd llama.cpp
-cmake -B build -DLLAMA_BUILD_IS_DEV=OFF
+cmake -B build
 cmake --build build --config Release -j --target llama-cli llama-server
 ```
-
-`LLAMA_BUILD_IS_DEV=OFF` builds the release tag without the default `-dev`
-version suffix. Check the result with `./build/bin/llama-cli --version`.
 
 When using NVIDIA GPUs, install the CUDA toolkit and build with CUDA support.
 Run these commands from the cloned `llama.cpp` directory:
 
 ```bash
-cmake -B build -DLLAMA_BUILD_IS_DEV=OFF -DGGML_CUDA=ON
+cmake -B build -DGGML_CUDA=ON
 cmake --build build --config Release -j --target llama-cli llama-server
 ```
 
